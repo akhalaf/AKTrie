@@ -26,6 +26,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self createTheContainersFromTextFile];
+    [self addString];
 }
 
 -(void)createTheContainersFromTextFile
@@ -61,6 +62,30 @@
     array = [NSMutableArray arrayWithArray:wordsArray];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
     NSLog(@"time of creating an array with the strings array is: %f", timeAfterProcess - timeBeforeProcess);
+}
+
+-(void)addString
+{
+    NSString* stringToAdd = @"Khalaf";
+    
+    // adding new string to the trie
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [trie addString:stringToAdd];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of adding new string to the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    
+    // adding new string to the trie
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [array addObject:stringToAdd];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of adding new string to the array is: %f", timeAfterProcess - timeBeforeProcess);
+    
+    // adding new string to the trie
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [dictionary setObject:stringToAdd
+                   forKey:stringToAdd];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of adding new string to the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
 }
 
 - (void)didReceiveMemoryWarning {
