@@ -26,13 +26,16 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self createTheContainersFromTextFile];
+    NSLog(@"------------------------------------------------------");
     [self addString];
+    NSLog(@"------------------------------------------------------");
+    [self checkIfStringExistWithSuccess];
+    NSLog(@"------------------------------------------------------");
 }
 
 -(void)createTheContainersFromTextFile
 {
     // Load all the file content from the text file into array
-    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     NSString* path = [[NSBundle mainBundle] pathForResource:@"english_words"
                                                      ofType:@"txt"];
     NSString* content = [NSString stringWithContentsOfFile:path
@@ -41,8 +44,8 @@
     
     NSCharacterSet* nonAlphabitSet = [[NSCharacterSet letterCharacterSet]invertedSet];
     NSArray* wordsArray = [content componentsSeparatedByCharactersInSet:nonAlphabitSet];
-    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of loading the text file into an array is: %f", timeAfterProcess - timeBeforeProcess);
+    
+    
     
     // creating AKTrie with about 20K english string
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
@@ -74,18 +77,41 @@
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
     NSLog(@"time of adding new string to the trie is: %f", timeAfterProcess - timeBeforeProcess);
     
-    // adding new string to the trie
+    // adding new string to the array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     [array addObject:stringToAdd];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
     NSLog(@"time of adding new string to the array is: %f", timeAfterProcess - timeBeforeProcess);
     
-    // adding new string to the trie
+    // adding new string to the dictionary
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     [dictionary setObject:stringToAdd
                    forKey:stringToAdd];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
     NSLog(@"time of adding new string to the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+}
+
+-(void)checkIfStringExistWithSuccess
+{
+    NSString* stringToCheck = @"Khalaf";
+    
+    // checking if string exist in the trie
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [trie containsString:stringToCheck];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    
+    // checking if string exist in the array
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [array containsObject:stringToCheck];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+    
+    // checking if string exist in the dictionary
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    [dictionary objectForKey:stringToCheck];
+    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"time of checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
 }
 
 - (void)didReceiveMemoryWarning {
