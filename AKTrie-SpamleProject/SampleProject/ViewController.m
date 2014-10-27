@@ -31,6 +31,8 @@
     NSLog(@"------------------------------------------------------");
     [self checkIfStringExistWithSuccess];
     NSLog(@"------------------------------------------------------");
+    [self checkIfStringExistWithFailure];
+    NSLog(@"------------------------------------------------------");
 }
 
 -(void)createTheContainersFromTextFile
@@ -97,21 +99,50 @@
     
     // checking if string exist in the trie
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
-    [trie containsString:stringToCheck];
-    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    if ([trie containsString:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of success checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    }
     
     // checking if string exist in the array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
-    [array containsObject:stringToCheck];
-    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+    if ([array containsObject:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of success checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+    }
     
     // checking if string exist in the dictionary
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
-    [dictionary objectForKey:stringToCheck];
-    timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+    if ([dictionary objectForKey:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of success checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+    }
+}
+
+-(void)checkIfStringExistWithFailure
+{
+    NSString* stringToCheck = @"StringNotExist";
+    
+    // checking if string exist in the trie
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    if (![trie containsString:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of failure checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    }
+    
+    // checking if string exist in the array
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    if (![array containsObject:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of failure checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+    }
+    
+    // checking if string exist in the dictionary
+    timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
+    if (![dictionary objectForKey:stringToCheck]) {
+        timeAfterProcess = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"time of failure checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+    }
 }
 
 - (void)didReceiveMemoryWarning {
