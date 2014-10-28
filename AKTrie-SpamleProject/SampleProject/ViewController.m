@@ -19,20 +19,21 @@
     NSMutableArray* array;
     NSMutableDictionary* dictionary;
     NSTimeInterval timeBeforeProcess, timeAfterProcess;
+    float trieTime, arrayTime, dictionaryTime;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    NSLog(@" _____________________________________________________________");
+    NSLog(@"|          |     NSArray    |   NSDictionary |     AKTrie     |");
+    NSLog(@"|__________|________________|________________|________________|");
     [self createTheContainersFromTextFile];
-    NSLog(@"------------------------------------------------------");
     [self addString];
-    NSLog(@"------------------------------------------------------");
     [self checkIfStringExistWithSuccess];
-    NSLog(@"------------------------------------------------------");
     [self checkIfStringExistWithFailure];
-    NSLog(@"------------------------------------------------------");
+    NSLog(@"|__________|________________|________________|________________|");
 }
 
 -(void)createTheContainersFromTextFile
@@ -53,20 +54,22 @@
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     trie = [AKTrie trieWithStringsArray:wordsArray];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of creating a trie with the strings array is: %f", timeAfterProcess - timeBeforeProcess);
+    trieTime = timeAfterProcess - timeBeforeProcess;
     
     // creating dictionary from the words array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     dictionary = [NSMutableDictionary dictionaryWithObjects:wordsArray
                                                     forKeys:wordsArray];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of creating a dictionary with the strings array is: %f", timeAfterProcess - timeBeforeProcess);
+    dictionaryTime = timeAfterProcess - timeBeforeProcess;
     
     // creating array from the words array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     array = [NSMutableArray arrayWithArray:wordsArray];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of creating an array with the strings array is: %f", timeAfterProcess - timeBeforeProcess);
+    arrayTime = timeAfterProcess - timeBeforeProcess;
+
+    NSLog(@"|  create  |  %.6f sec  |  %.6f sec  |  %.6f sec  |", arrayTime, dictionaryTime, trieTime);
 }
 
 -(void)addString
@@ -77,20 +80,22 @@
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     [trie addString:stringToAdd];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of adding new string to the trie is: %f", timeAfterProcess - timeBeforeProcess);
+    trieTime = timeAfterProcess - timeBeforeProcess;
     
     // adding new string to the array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     [array addObject:stringToAdd];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of adding new string to the array is: %f", timeAfterProcess - timeBeforeProcess);
+    arrayTime = timeAfterProcess - timeBeforeProcess;
     
     // adding new string to the dictionary
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     [dictionary setObject:stringToAdd
                    forKey:stringToAdd];
     timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"time of adding new string to the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+    float dictionaryTime = timeAfterProcess - timeBeforeProcess;
+    
+    NSLog(@"|   add    |  %.6f sec  |  %.6f sec  |  %.6f sec  |", arrayTime, dictionaryTime, trieTime);
 }
 
 -(void)checkIfStringExistWithSuccess
@@ -101,22 +106,24 @@
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if ([trie containsString:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of success checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+        trieTime = timeAfterProcess - timeBeforeProcess;
     }
     
     // checking if string exist in the array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if ([array containsObject:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of success checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+        arrayTime = timeAfterProcess - timeBeforeProcess;
     }
     
     // checking if string exist in the dictionary
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if ([dictionary objectForKey:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of success checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+        dictionaryTime = timeAfterProcess - timeBeforeProcess;
     }
+    
+    NSLog(@"|  check ✓ |  %.6f sec  |  %.6f sec  |  %.6f sec  |", arrayTime, dictionaryTime, trieTime);
 }
 
 -(void)checkIfStringExistWithFailure
@@ -127,22 +134,24 @@
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if (![trie containsString:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of failure checking if string exist in the trie is: %f", timeAfterProcess - timeBeforeProcess);
+        trieTime = timeAfterProcess - timeBeforeProcess;
     }
     
     // checking if string exist in the array
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if (![array containsObject:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of failure checking if string exist in the array is: %f", timeAfterProcess - timeBeforeProcess);
+        arrayTime = timeAfterProcess - timeBeforeProcess;
     }
     
     // checking if string exist in the dictionary
     timeBeforeProcess = [[NSDate date] timeIntervalSince1970];
     if (![dictionary objectForKey:stringToCheck]) {
         timeAfterProcess = [[NSDate date] timeIntervalSince1970];
-        NSLog(@"time of failure checking if string exist in the dictionary is: %f", timeAfterProcess - timeBeforeProcess);
+        dictionaryTime = timeAfterProcess - timeBeforeProcess;
     }
+    
+    NSLog(@"|  check ✗ |  %.6f sec  |  %.6f sec  |  %.6f sec  |", arrayTime, dictionaryTime, trieTime);
 }
 
 - (void)didReceiveMemoryWarning {
